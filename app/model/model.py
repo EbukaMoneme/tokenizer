@@ -4,7 +4,7 @@ import gensim.downloader
 import re
 
 w2v = gensim.downloader.load('glove-twitter-25')
-time.sleep(5)
+time.sleep(10)
 
 
 def createTokens(text):
