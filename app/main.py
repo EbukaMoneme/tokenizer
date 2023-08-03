@@ -2,7 +2,7 @@ from fastapi import Body, FastAPI
 from pydantic import BaseModel
 import time
 
-from app.model.model import createTokens
+from app.model.model import generate_like_terms
 
 app = FastAPI()
 
@@ -12,7 +12,7 @@ class TextIn(BaseModel):
 
 
 class TokensOut(BaseModel):
-    tokens: object
+    tokens: list[str]
 
 
 @app.get('/')
@@ -22,7 +22,7 @@ def home():
 
 @app.post('/tokenize')
 def tokenize(payload: dict = Body(...)):
-    time.sleep(0.3)
+    time.sleep(0.1)
 
-    tokens = createTokens(payload['query'])
+    tokens = generate_like_terms(payload['query'])
     return tokens
