@@ -1,23 +1,28 @@
 import time
 from gensim import models
 import gensim.downloader
-from keybert import KeyBERT
 import re
+# from keybert import KeyBERT ## commented for now
+from sklearn.feature_extraction.text import TfidfVectorizer  # temp
+from sklearn.feature_extraction import text  # temp
 
 # KeyBERT model to extract important words/phrases and block stop words from query sentence
-kw_model = KeyBERT()
+# kw_model = KeyBERT() ## commented for now
 
 # Word2vec variant model to generate like terms
 w2v = gensim.downloader.load('glove-twitter-25')
 # time.sleep(10)
 
 
-def extract_phrases(query):
-    extraction = kw_model.extract_keywords(
-        query, keyphrase_ngram_range=(1, 2), stop_words='english')
-    keywords = [entry[0].replace(
-        " ", "-") if " " in entry[0] else entry[0] for entry in extraction]
-    return keywords
+# def extract_phrases(query):
+#     extraction = kw_model.extract_keywords(
+#         query, keyphrase_ngram_range=(1, 2), stop_words='english')
+#     keywords = [entry[0].replace(
+#         " ", "-") if " " in entry[0] else entry[0] for entry in extraction]
+#     return keywords
+
+stop_words = list(text.ENGLISH_STOP_WORDS)  # temp
+tfidf = TfidfVectorizer(stop_words=stop_words)  # temp
 
 
 def retrieve_related_terms(text):
@@ -49,7 +54,9 @@ def retrieve_related_terms(text):
 
 
 def generate_like_terms(query):
-    keywords = extract_phrases(query)
+    # keywords = extract_phrases(query) ## commented for now
+    transformed = tfidf.fit_transform([query])
+    keywords = tfidf.get_feature_names_out()  # temp
     final_terms = []
     for word in keywords:
         related_terms = retrieve_related_terms(word)
