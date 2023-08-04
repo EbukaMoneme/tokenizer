@@ -54,4 +54,4 @@ def generate_like_terms(query):
     for word in keywords:
         related_terms = retrieve_related_terms(word)
         final_terms.extend(related_terms)
-    return final_terms
+    return list(set(final_terms))
